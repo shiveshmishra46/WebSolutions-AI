@@ -1,0 +1,1330 @@
+@import url("https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
+@import "tailwindcss";
+
+:root {
+  --gradient: radial-gradient(circle, #e5e5e5 0%, #fff 100%);
+}
+
+html,
+body {
+  width: 100dvw;
+  overflow-x: hidden;
+  background-color: black;
+  color: white;
+  scroll-behavior: smooth;
+  font-family: "Mona Sans", sans-serif;
+}
+
+section {
+  width: 100dvw;
+}
+
+@theme {
+  --font-sans: "Mona Sans", sans-serif;
+  --color-white-50: #d9ecff;
+  --color-black-50: #1c1c21;
+  --color-black-100: #0e0e10;
+  --color-black-200: #282732;
+  --color-blue-50: #839cb5;
+  --color-blue-100: #2d2d38;
+}
+
+@layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+  .flex-col-center {
+    @apply flex flex-col justify-center items-center;
+  }
+}
+
+@layer components {
+  .padding-x {
+    @apply px-5 md:px-10;
+  }
+
+  .padding-x-lg {
+    @apply px-5 md:px-20;
+  }
+
+  .section-padding {
+    @apply px-5 md:px-10 md:mt-40 mt-20;
+  }
+
+  .mt-responsive {
+    @apply xl:mt-20 md:mt-0 mt-40;
+  }
+
+  /* General Grids */
+  .grid-base {
+    @apply grid grid-cols-1;
+  }
+
+  .grid-2-cols {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+
+  .grid-3-cols {
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6;
+  }
+
+  .grid-3-cols-md-tight {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-0;
+  }
+
+  .grid-4-cols {
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-7;
+  }
+
+  .grid-12-cols {
+    @apply grid grid-cols-1 xl:grid-cols-12 gap-10;
+  }
+
+  .hero-layout {
+    @apply relative z-10 xl:mt-20 mt-32 md:h-dvh h-[80vh] flex xl:items-center items-start justify-center;
+  }
+
+  .hero-text {
+    @apply flex flex-col justify-center md:text-[60px] text-[30px] font-semibold relative z-10 pointer-events-none;
+    img {
+      @apply size-8 md:size-10 object-contain;
+    }
+    .slide {
+      @apply absolute pt-0 px-2 md:px-5 py-[30px] h-[48px] md:h-[78px] md:translate-y-1 translate-y-0 overflow-hidden;
+    }
+  }
+
+  .hero-badge {
+    @apply bg-black-200 py-2 px-4 rounded-full w-fit text-sm md:text-base text-nowrap;
+  }
+
+  .hero-3d-layout {
+    @apply xl:w-[70%] w-full h-full min-h-[50vh] absolute xl:-top-20 top-24 xl:-right-20 right-0;
+  }
+
+  .navbar {
+    @apply fixed w-full left-1/2 py-5 px-5 md:px-20 -translate-x-1/2 z-[100] transition-all duration-300 ease-in-out;
+
+    &.scrolled {
+      @apply top-0 bg-black;
+    }
+
+    &.not-scrolled {
+      @apply md:top-10 top-0 bg-transparent;
+    }
+
+    .inner {
+      @apply mx-auto flex items-center justify-between;
+    }
+
+    .logo {
+      @apply text-white-50 text-xl md:text-2xl font-semibold transition-transform duration-300 hover:scale-105;
+    }
+
+    nav.desktop {
+      @apply hidden lg:flex items-center;
+
+      ul {
+        @apply flex space-x-8;
+
+        li {
+          @apply text-white-50 relative;
+
+          span {
+            @apply transition-colors duration-300 hover:text-white;
+          }
+
+          .underline {
+            @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full;
+          }
+        }
+      }
+    }
+
+    .contact-btn {
+      @apply flex;
+
+      .inner {
+        @apply px-5 py-2 rounded-lg bg-white text-black group-hover:bg-black-50 transition-colors duration-300;
+
+        span {
+          @apply group-hover:text-white transition-colors duration-300;
+        }
+      }
+    }
+  }
+
+  .app-showcase {
+    @apply w-full mt-20 px-5 md:px-20 py-10 md:py-20 flex items-center justify-center;
+
+    .showcaselayout {
+      @apply flex xl:flex-row flex-col gap-10 justify-between;
+    }
+
+    .first-project-wrapper {
+      @apply h-full flex flex-col justify-between xl:w-[60%];
+
+      .image-wrapper {
+        @apply xl:h-[70vh] md:h-[50vh] h-96 relative;
+
+        img {
+          @apply w-full h-full object-cover rounded-xl absolute inset-0;
+        }
+      }
+
+      .text-content {
+        @apply space-y-5 mt-5;
+
+        .badges {
+          @apply flex gap-2 mb-4;
+        }
+
+        h2 {
+          @apply text-2xl md:text-3xl lg:text-4xl font-bold;
+        }
+      }
+    }
+
+    .project-list-wrapper {
+      @apply flex md:flex-row flex-col xl:flex-col gap-10 xl:w-[40%];
+
+      .image-wrapper {
+        @apply xl:h-[37vh] md:h-52 lg:h-72 h-64 relative rounded-xl xl:px-5 2xl:px-12 py-0;
+      }
+
+      img {
+        @apply w-full h-full object-contain rounded-xl;
+      }
+
+      h2 {
+        @apply text-lg md:text-xl lg:text-2xl font-semibold mt-5;
+      }
+    }
+  }
+
+  .cta-wrapper {
+    @apply relative z-20 cursor-pointer;
+  }
+
+  .cta-button {
+    @apply px-4 py-4 rounded-lg bg-black-200 flex justify-center items-center relative cursor-pointer overflow-hidden;
+
+    .bg-circle {
+      @apply absolute -right-10 origin-center top-1/2 -translate-y-1/2 
+        w-[150%] h-[120%] group-hover:size-10 group-hover:right-10
+        rounded-full bg-white-50 transition-all duration-500;
+    }
+
+    .text {
+      @apply uppercase md:text-lg text-black transition-all duration-500
+        group-hover:text-white-50 group-hover:-translate-x-5 xl:translate-x-0 -translate-x-5;
+    }
+
+    .arrow-wrapper {
+      @apply group-hover:bg-white-50 size-10 rounded-full absolute right-10 top-1/2 
+        -translate-y-1/2 flex justify-center items-center overflow-hidden;
+
+      img {
+        @apply size-5 xl:-translate-y-32 translate-y-0 animate-bounce group-hover:translate-y-0 transition-all duration-500;
+      }
+    }
+  }
+
+  .card-border {
+    @apply border border-black-50 bg-black-100;
+  }
+
+  .marquee-item {
+    @apply md:w-40 w-32;
+  }
+
+  .timeline-wrapper {
+    @apply absolute top-0 xl:left-[35.5vw] md:left-10 left-5 h-full flex justify-center;
+  }
+
+  .timeline {
+    @apply absolute z-30 h-[110%] -top-10 w-14 md:w-28 bg-black;
+  }
+
+  .timeline-logo {
+    @apply md:size-20 size-10 flex-none rounded-full flex justify-center items-center md:-translate-y-7 border border-black-50 bg-black-100;
+  }
+
+  .exp-card-wrapper {
+    @apply flex flex-col-reverse xl:flex-row xl:gap-20 gap-10 justify-between;
+  }
+
+  .gradient-edge {
+    @apply w-36 h-full absolute bottom-0 z-20;
+  }
+
+  /* [REMOVED OLD TECH CARD STYLES] */
+
+  /* Only keeping the grid layout definition */
+  .tech-grid {
+    @apply grid xl:grid-cols-5 md:grid-cols-3 grid-cols-1 xl:gap-16 md:gap-10 gap-5 mt-16;
+  }
+
+  /* [REMOVED OLD TECH CARD ICON WRAPPER STYLES] */
+
+  form {
+    label {
+      @apply block text-white-50 mb-2;
+    }
+
+    input,
+    textarea {
+      @apply w-full px-4 py-4 md:text-base text-sm placeholder:text-blue-50 bg-blue-100 rounded-md;
+    }
+
+    a {
+      @apply w-full py-4 bg-white text-black font-semibold rounded-md flex justify-center items-center gap-2;
+
+      img {
+        @apply inline-block;
+      }
+    }
+  }
+
+  .footer {
+    @apply my-10 md:mt-20 mt-10 text-white-50 px-5 md:px-20 xl:px-20 flex items-center justify-center;
+
+    .footer-container {
+      @apply grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-0 w-full;
+    }
+
+    p {
+      @apply text-center md:text-start cursor-pointer;
+    }
+
+    .socials {
+      @apply flex items-center justify-center gap-5;
+
+      .icon {
+        @apply border border-black-50 bg-black-100 flex justify-center items-center rounded-xl size-10 md:size-12 cursor-pointer transition-all duration-500 hover:bg-black-50;
+      }
+
+      img {
+        @apply inline-block;
+      }
+    }
+  }
+}
+
+/* Hero text slider starts */
+.slide {
+  display: inline-block;
+  flex-direction: column;
+  transition: all cubic-bezier(0.71, 0.03, 0.34, 1);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  animation: wordSlider 21s infinite cubic-bezier(0.9, 0.01, 0.3, 0.99);
+}
+
+.cta-wrapper {
+  width: 224px;
+  margin-top: -1.5rem;
+}
+
+@media (max-width: 640px) and (max-width: 1280) {
+  .cta-wrapper {
+    width: 75%; /* Full width on mobile */
+    /* margin-top: -8.2rem; */
+  }
+}
+
+@keyframes wordSlider {
+  0% {
+    transform: translateY(0.5%);
+  }
+  12.5% {
+    transform: translateY(-12.5%);
+  }
+  25% {
+    transform: translateY(-25%);
+  }
+  37.5% {
+    transform: translateY(-37.5%);
+  }
+  50% {
+    transform: translateY(-50%);
+  }
+  62.5% {
+    transform: translateY(-62.5%);
+  }
+  75% {
+    transform: translateY(-75%);
+  }
+  87.5% {
+    transform: translateY(-87.5%);
+  }
+}
+
+/* Hero Text slider ends */
+
+.gradient-line {
+  width: 2px;
+  background: linear-gradient(
+    0deg,
+    rgba(69, 222, 196, 0) 0%,
+    #62e0ff 25%,
+    #52aeff 37.51%,
+    #fd5c79 62.83%,
+    #6d45ce 92.91%
+  );
+}
+
+.gradient-edge:nth-of-type(1) {
+  left: 0;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.gradient-edge:nth-of-type(2) {
+  right: 0;
+  background: linear-gradient(
+    -90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* marquee */
+.marquee {
+  width: 100dvw;
+  overflow: hidden;
+  position: relative;
+}
+.marquee-box {
+  display: flex;
+  align-items: center;
+  width: 200%;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+  animation: marquee 60s linear infinite;
+}
+.marquee-item {
+  float: left;
+}
+@keyframes marquee {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}
+/* marquee end */
+
+.card {
+  --start: 0;
+  position: relative;
+  z-index: 40;
+  overflow: hidden;
+  transition: border-color 1s ease-in-out;
+}
+
+.card::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: var(--gradient);
+  background-attachment: fixed;
+  mask: linear-gradient(#0000, #0000),
+    conic-gradient(
+      from calc((var(--start) - 15) * 1deg),
+      #ffffff1f 0deg,
+      white,
+      #ffffff00 100deg
+    );
+  mask-composite: intersect;
+  mask-clip: padding-box, border-box;
+  opacity: 0;
+  transition: 0.5s ease;
+}
+
+.glow {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(10px);
+  filter: saturate(200);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Profile Modal Styles - Replace existing profile modal styles with these */
+
+.profile-container {
+  @apply flex items-center gap-3;
+}
+
+.profile-pic {
+  @apply size-8 md:size-10 flex-shrink-0 rounded-full overflow-hidden cursor-pointer border-2 border-white-50 transition-all duration-300 hover:scale-110;
+  z-index: 10;
+}
+
+.profile-image {
+  @apply w-full h-full object-cover;
+}
+
+.modal-title {
+  @apply text-xl md:text-2xl text-white-50 font-semibold;
+}
+
+/* .close-modal {
+  @apply text-white text-3xl cursor-pointer hover:text-white-50 transition-all duration-300;
+  opacity: 0;
+  animation: fadeIn 0.3s 0.3s forwards;
+  line-height: 1;
+} */
+
+/* .modal-content.closing .close-modal {
+  animation: fadeOut 0.3s forwards;
+}
+
+.close-modal:hover {
+  text-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+.modal-image-container {
+  @apply rounded-xl overflow-hidden w-full;
+  animation: imageReveal 0.6s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.modal-image-container.closing {
+  animation: imageHide 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+.image-wrapper-profile {
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect ratio 
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.modal-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes imageReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes imageHide {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+}
+
+@keyframes floatDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatingIcon {
+  0% {
+    transform: translateY(0) scale(1.05);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) scale(1.05);
+  }
+}
+
+/* Modal animations */
+@keyframes expandFromCorner {
+  0% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shrinkToCorner {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+}
+
+/* Universal Tech Stack effects for all devices */
+
+/* Base tech card styles */
+.tech-card {
+  background: rgba(28, 28, 33, 0.7);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(40, 39, 50, 0.5);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  height: 250px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Active state styling (for both hover and touch) */
+.tech-card-active, 
+.tech-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(100, 149, 237, 0.3);
+}
+
+/* Icon wrapper styling */
+.tech-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  filter: saturate(0.8);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Apply animation when active */
+.floating-animation {
+  animation: floatingIcon 3s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-float {
+  animation: floatDown 1s ease-out forwards;
+}
+
+/* Touch screen specific optimizations */
+@media (hover: none) {
+  /* Improve touch feedback */
+  .tech-card:active {
+    transform: scale(0.98) translateY(-5px);
+    transition: all 0.2s ease;
+  }
+}
+
+/* Ensure scrolling works properly on mobile */
+@media (max-width: 768px) {
+  .tech-grid {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Modal styling */
+.modal-backdrop {
+  @apply fixed inset-0 z-[200] flex items-center justify-center;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  position: absolute;
+  background-color: #282732;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  width: 280px;
+  max-width: 70vw;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  animation: expandFromCorner 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.modal-content.closing {
+  animation: shrinkToCorner 0.5s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  .modal-content {
+    width: 95vw;
+    padding: 15px;
+    top: 95px;
+  }
+
+  .navbar .logo {
+    font-size: 1rem; /* Smaller on mobile */
+    letter-spacing: -0.1px; /* Tighter spacing on small screens */
+  }
+  
+  .text-white-50.md\:text-xl {
+    font-size: 1.1rem; /* Much smaller on mobile */
+    line-height: 1.25;
+    letter-spacing: -0.2px; /* Slightly tighter tracking */
+  }
+  
+  .font-bold.animated-text {
+    font-size: 0.97rem; /* Slightly larger than regular text for emphasis */
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .navbar .logo {
+    font-size: 1.1rem; /* Medium size for tablets */
+  }
+  
+  .text-white-50.md\:text-xl {
+    font-size: 0.95rem; /* Medium size for tablets */
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 500px) {
+  .navbar {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .navbar .logo {
+    font-size: 0.9rem;
+  }
+  
+  .navbar .contact-btn .inner {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Reduce icon size on very small screens */
+  .navbar .contact-btn .inner .h-4 {
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-right: 0.01rem;
+  }
+  
+  /* Create more space between buttons */
+  .navbar .flex.items-center.gap-\[6px\] {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 320px) {
+  .modal-content {
+    width: 98vw;
+    padding: 10px;
+    top: 80px;
+  }
+  
+  .modal-title {
+    @apply text-lg;
+  }
+  
+  .close-modal {
+    @apply text-2xl;
+  }
+}
+
+/* Mobile responsive fixes for navbar and about text */
+
+/* Make both buttons consistent - ensuring Resume button matches Contact Me button */
+.navbar .contact-btn {
+  @apply flex;
+}
+
+/* Synchronize transitions for both text and SVG icon */
+.navbar .contact-btn .inner svg {
+  stroke: currentColor; /* Use current text color for stroke */
+  transition: all 0.3s ease !important; /* Match existing transition */
+}
+
+.navbar .contact-btn .inner {
+  @apply px-1 py-0.5 sm:px-4 sm:py-2 md:px-5 md:py-2 rounded-lg bg-white text-black text-sm sm:text-base 
+    group-hover:bg-black-50 transition-colors duration-300;
+}
+
+/* Add this to the end of your index.css file */
+.navbar .contact-btn .inner {
+  /* This will override your earlier definitions */
+  font-size: 0.75rem; /* Default mobile size */
+}
+
+@media (min-width: 640px) {
+  .navbar .contact-btn .inner {
+    font-size: 0.8125rem; /* Tablet and up */
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar .contact-btn .inner {
+    font-size: 0.875rem; /* Desktop */
+  }
+}
+
+.navbar .contact-btn.group:hover .inner svg {
+  stroke: white !important; /* Explicitly set the stroke color on hover */
+}
+
+/* Ensure the currentColor is properly applied */
+.navbar .contact-btn .inner svg {
+  stroke: currentColor;
+  transition: stroke 0.3s ease;
+}
+
+.navbar .contact-btn .inner *{
+  transition: all 0.3s ease !important; /* Force same transition for all child elements */
+}
+
+/* Fix spacing for Resume button to match Contact Me */
+.navbar .contact-btn .inner span.hidden + span.inline-block {
+  margin-left: 0; /* Remove extra margin when "Download" is hidden */
+}
+
+/* Profile hover styles 
+@media (min-width: 768px) {
+   Hide profile pic on desktop when expanded 
+  .profile-pic.hidden-on-desktop {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+} 
+  Make sure the expanded profile appears on top 
+  
+  .profile-container {
+    position: relative;
+    z-index: 100;
+  }*/
+  
+
+/* New mobile profile modal styles to your index.css */
+/* Mobile profile modal - completely separate from navbar */
+/* Add to your index.css file */
+.mobile-profile-portal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start; /* Align to left side */
+  align-items: flex-start; /* Align to top */
+  padding-top: 0; /* Remove padding to allow exact positioning */
+  padding-left: 0; /* Remove padding to allow exact positioning */
+  z-index: 1000; /* Higher than navbar */
+  pointer-events: auto;
+  will-change: opacity; /* Performance optimization */
+}
+
+.mobile-profile-modal {
+  width: 80%;
+  max-width: 300px;
+  background-color: #282732;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  transform: scale(0.8);
+  transform-origin: top left; /* Scale from top left corner */
+  animation: zoomInFromIcon 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Smoother easing curve */
+  position: absolute; /* Allow custom positioning */
+  top: 95px; /* Position to overlap the icon - as specified */
+  left: 12px; /* Position to overlap the icon - as specified */
+  will-change: transform, opacity, border-radius; /* Performance optimization */
+}
+
+.mobile-profile-modal.modal-closing {
+  animation: zoomOutToIcon 0.4s cubic-bezier(0.33, 0.66, 0.66, 1) forwards;
+}
+
+.mobile-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-modal-title {
+  margin: 0;
+  padding: 0;
+  color: #d9ecff;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.mobile-modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-modal-body {
+  padding: 15px;
+}
+
+.mobile-modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+/* Optimized zoom animations for both mobile and desktop */
+@keyframes zoomInFromIcon {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+    border-radius: 50%;
+  }
+  30% {
+    opacity: 0.7;
+    border-radius: 30%;
+  }
+  70% {
+    opacity: 1;
+    border-radius: 15px;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(0.8);
+    border-radius: 12px;
+  }
+}
+
+@keyframes zoomOutToIcon {
+  0% {
+    opacity: 1;
+    transform: scale(0.8);
+    border-radius: 12px;
+  }
+  30% {
+    opacity: 0.8;
+    border-radius: 15px;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+    border-radius: 50%;
+  }
+}
+
+/* Add backdrop for mobile modal */
+.mobile-profile-portal::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  animation: fadeIn 0.3s forwards;
+  will-change: opacity; /* Performance optimization */
+}
+
+.mobile-profile-portal.closing::before {
+  animation: fadeOut 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Make sure mobile modal is above navbar */
+@media (max-width: 767px) {
+  .navbar {
+    z-index: 75;
+  }
+  
+  .mobile-profile-portal {
+    z-index: 1000;
+  }
+  
+  /* Force navbar to show when modal is closing
+  .mobile-profile-modal.modal-closing ~ .navbar,
+  .mobile-profile-portal.closing ~ .navbar {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }*/
+} 
+
+/* Add desktop zoom animations */
+@media (min-width: 768px) {
+  /* Desktop modal styling */
+  .profile-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    background-color: rgba(0, 0, 0, 0.7);
+    will-change: opacity;
+  }
+  
+  .modal-content {
+    transform-origin: top left;
+    animation: desktopZoomIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity, border-radius;
+  }
+  
+  .modal-content.closing {
+    animation: desktopZoomOut 0.4s cubic-bezier(0.33, 0.66, 0.66, 1) forwards;
+  }
+  
+  @keyframes desktopZoomIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.2);
+      border-radius: 50%;
+    }
+    30% {
+      opacity: 0.4;
+      border-radius: 30%;
+    }
+    70% {
+      opacity: 1;
+      border-radius: 10px;
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      border-radius: 8px;
+    }
+  }
+  
+  @keyframes desktopZoomOut {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+      border-radius: 8px;
+    }
+    30% {
+      opacity: 0.8;
+      border-radius: 10px;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.2);
+      border-radius: 50%;
+    }
+  }
+}
+
+/* Apply hardware acceleration for smoother animations */
+.profile-modal,
+.modal-content,
+.mobile-profile-portal,
+.mobile-profile-modal {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  transform: translateZ(0);
+}
+
+/* Arrow jumping animation */
+/* Add these styles for the right arrow animation */
+
+/* Modified arrow-wrapper class for the right-pointing arrow */
+
+/* Animation for the right-pointing arrow */
+.cta-button {
+  width: 250px;
+  height: 55px;
+  margin-bottom: -1rem;
+}
+
+.arrow-right-animation {
+  animation: arrowRightJump 1s ease-in-out infinite;
+}
+
+@keyframes arrowRightJump {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+/* Add hover effect for desktop */
+.cta-button:hover .arrow-right-animation {
+  animation-duration: 0.9s;
+}
+
+/* Make sure the existing floating summary panel styles are maintained */
+.floating-summary-panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 10px);
+  width: 700px;
+  background-color: #d9ecff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  z-index: 10;
+  animation: fadeIn 0.3s ease;
+  margin-left: 27rem;
+  margin-top: -6rem;
+}
+
+.floating-summary-content {
+  padding: 1.5rem;
+  position: relative;
+}
+
+.floating-summary-content h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.floating-summary-content p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.floating-summary-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Additional panel text styling - can be added to your existing CSS */
+.floating-summary-content .text-base {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-size: 1rem;
+  color: #333;
+}
+
+.floating-summary-content .font-bold {
+  text-align: center;
+  width: 100%;
+  display: block;
+  color: #000;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.floating-summary-content .text-gray-700 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .floating-summary-content .font-bold {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .floating-summary-content .text-base {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-summary-content .font-bold {
+    font-size: 1.2rem;
+  }
+  
+  .floating-summary-content .text-base {
+    font-size: 0.9rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 1280px) {
+  .cta-button-about {
+    width: 12rem;
+    margin-bottom: -8rem;
+    height: 3em;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1280px) and (max-width) {
+  .cta-button {
+    margin-bottom: -12rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-summary-panel {
+    width: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-summary-panel {
+    width: 350px;
+    margin-left: 0.3rem;
+    margin-top: 6rem;
+  }
+}
+
+/* Modified arrow-wrapper class for the right-pointing arrow */
+
+/* Animation for the right-pointing arrow */
+.cta-button {
+  width: 250px;
+  height: 57px;
+  margin-bottom: -1rem;
+}
+
+/* Target only the "See my Work" button to lower its height */
+.cta-button:not(.cta-button-about) {
+  height: 60px;
+  width: 275px; /* Lower height for "See my Work" button - adjust as needed */
+}
+
+.arrow-right-animation {
+  animation: arrowRightJump 1s ease-in-out infinite;
+}
+
+@keyframes arrowRightJump {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+/* Add hover effect for desktop */
+.cta-button:hover .arrow-right-animation {
+  animation-duration: 0.9s;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 1280px) {
+  .cta-button-about {
+    width: 13rem;
+    height: 3.12em;
+    font-size: 0.95rem;
+  }
+  
+  /* Also update the height for "See my Work" button on laptops */
+  .cta-button:not(.cta-button-about) {
+    height: 3em; /* Adjust as needed for laptop screens */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Update height for "See my Work" button on tablets/mobile */
+  .cta-button:not(.cta-button-about) {
+    height: 3em;
+    width: 14em; /* Adjust as needed for mobile screens */
+  }
+}
+
+@media (max-width: 1280px) {
+  .floating-summary-panel {
+    margin-top: 6em;
+    margin-left: 0rem;
+  }
+}
+

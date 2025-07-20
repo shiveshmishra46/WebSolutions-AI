@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useDevice } from "../context/DeviceContext";
+import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 const FloatingSummary = ({ type = "work" }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const { performanceMode } = useDevice();
   
   // Determine if it's a mobile/tablet device for click vs hover behavior
   const isMobileTablet = typeof window !== 'undefined' && window.innerWidth <= 1024;

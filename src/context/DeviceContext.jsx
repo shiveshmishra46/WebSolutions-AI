@@ -48,6 +48,7 @@ export const DeviceProvider = ({ children }) => {
 };
 
 // Custom hook to use the DeviceContext
+// eslint-disable-next-line react-refresh/only-export-components
 export const useDevice = () => {
   const context = useContext(DeviceContext);
   if (!context) {

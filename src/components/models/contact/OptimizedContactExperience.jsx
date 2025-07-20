@@ -14,7 +14,7 @@ const OptimizedContactExperience = () => {
           src="/images/contact-computer-static.png" 
           alt="Contact Computer" 
           className="w-full h-full object-cover"
-          onError={(e) => {
+          onError={() => {
             console.error("Failed to load contact computer static image");
           }}
         />

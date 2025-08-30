@@ -12,11 +12,13 @@ This README documents the full project setup, structure, and workflow so you and
 - Features
 - Project Structure
 - Detailed Walkthrough (by file and folder)
+- Performance Modes and Low-End Fallbacks
 - Getting Started
 - Development Workflow
 - Build and Deployment
 - Quality and Conventions
 - Extending the Project
+- Testing and Debugging Tips
 - FAQ
 - License
 - Contact
@@ -54,11 +56,14 @@ Use it to:
 ## Features
 
 - Responsive, accessible, and mobile-ready UI
-- Sticky, interactive navbar
+- Sticky, interactive navbar with mobile-friendly modal/profile view
 - Section headers and content blocks
 - Animated counters for metrics
 - Floating summary and performance panel components
 - Device detection modal to tailor user experience
+- Two performance modes:
+  - Ultra (3D experience on high-end devices)
+  - Balanced (Static image/PNG fallback for low-end devices)
 - Reusable button and card components
 - Clean project structure with clear separation of concerns
 
@@ -78,7 +83,7 @@ WebSolutions-AI/
 ├─ tailwind.config.js
 ├─ vite.config.js
 ├─ public/
-│  └─ (static assets like images, icons, favicons)
+│  └─ (static assets like images, icons, favicons, PNG fallbacks)
 └─ src/
    ├─ App.jsx
    ├─ index.css
@@ -93,15 +98,22 @@ WebSolutions-AI/
    │  ├─ PerformancePanel.jsx
    │  ├─ TitleHeader.jsx
    │  └─ models/
-   │     └─ (supporting assets/data for components)
+   │     └─ (3D assets/data or model helpers)
    ├─ constants/
-   │  └─ (static data: nav links, services, pricing, FAQs, etc.)
+   │  └─ (nav links, services, pricing, FAQs, etc.)
    ├─ context/
-   │  └─ (React Context providers: theme, device, app state)
+   │  └─ DeviceContext.jsx (performance mode state, device hints)
    ├─ sections/
-   │  └─ (page sections: Hero, Services, Pricing, Testimonials, Contact, etc.)
+   │  ├─ OptimizedHero.jsx
+   │  ├─ OptimizedTechStack.jsx
+   │  ├─ OptimizedContact.jsx
+   │  ├─ Featurecards.jsx
+   │  ├─ ExperienceSection.jsx
+   │  ├─ LogoShowcase.jsx
+   │  ├─ Showcase.jsx
+   │  └─ Testimonials.jsx
    └─ styles/
-      └─ (additional css/modules if needed)
+      └─ (additional CSS/modules if needed)
 ```
 
 Note: Some subfolders (constants, context, sections, styles, components/models) encapsulate domain-specific logic and assets. Their exact contents evolve with features and can be explored directly in the repository.
@@ -113,76 +125,135 @@ Note: Some subfolders (constants, context, sections, styles, components/models) 
 ### Root
 - .gitignore: Ignores node_modules, build outputs, and editor/system files.
 - README.md: Project documentation (this file).
-- components.json: UI component registry/configuration file (for maintaining consistent component scaffolding or library integration).
-- eslint.config.js: Lint rules and configuration to maintain code quality and consistency.
+- components.json: Optional UI component registry/configuration.
+- eslint.config.js: Lint rules and configuration.
 - index.html: Vite entry HTML; defines the root mount point for React.
-- package.json / package-lock.json: Project metadata, scripts, and dependency lockfile for reproducible installs.
+- package.json / package-lock.json: Scripts, dependencies, and lockfile.
 - tailwind.config.js: Tailwind setup (content paths, theme extensions, plugins).
 - vite.config.js: Vite bundler configuration (aliases, plugins, dev server options).
-- public/: Static files served at root (e.g., /favicon.ico, images, manifest).
+- public/: Static files served at root (e.g., /images, /favicon.ico, manifest). Place PNG fallbacks here (e.g., /images/models/…).
 
 ### src (Application Code)
 - main.jsx:
-  - Bootstraps the React application.
-  - Mounts the root component (App) to the DOM element in index.html.
+  - Bootstraps the React application and mounts App into index.html.
 - App.jsx:
-  - The main composition layer for routing or page sections.
-  - Imports shared components (e.g., Navbar, headers, content sections).
-  - Orchestrates the layout and page order for services landing pages.
+  - Main composition layer for the site.
+  - Wraps the app in DeviceProvider (context for performance mode).
+  - Shows DeviceDetectionModal after a short delay on fresh page loads.
+  - Enforces default “balanced” mode on true refresh to favor UX on low-end devices.
+  - Renders sections (OptimizedHero/TechStack/Contact, Showcase, Testimonials, etc.).
+  - Renders PerformancePanel (user can switch modes from anywhere).
+
 - index.css:
   - Tailwind directives and global styles.
-  - Custom utilities, variables, or base resets if needed.
 
 ### src/components (Reusable UI Components)
 - AnimatedCounter.jsx:
-  - Displays animated numeric counts for KPIs (clients served, projects completed, uptime, etc.).
-  - Useful in Hero/Stats sections.
+  - Animated numeric counters for KPIs.
 - Button.jsx:
-  - Reusable CTA/button with variants and sizes (e.g., primary/secondary).
+  - Reusable CTA/button with variants and sizes.
 - DeviceDetectionModal.jsx:
-  - Detects device context (mobile/desktop) and informs user for best experience or provides tailored actions.
+  - Lets user pick mode: “Balanced (Static)” vs “Ultra (3D)”.
+  - Calls updatePerformanceMode from DeviceContext.
+  - Intended to appear after initial load (see App.jsx).
 - FloatingSummary.jsx:
-  - A floating panel to summarize key info (e.g., selected services, pricing highlights, or features).
+  - Floating panel to summarize key info (e.g., highlights).
 - GlowCard.jsx:
-  - Card component with a glow/hover effect; great for showcasing services or features.
+  - Card with glow/hover effect; for features/services.
 - Navbar.jsx:
-  - Responsive, possibly sticky navigation with desktop/mobile states.
-  - Handles section links and smooth scroll behavior.
+  - Responsive navigation; includes mobile profile modal & desktop hover profile.
 - PerformancePanel.jsx:
-  - Panel to display performance highlights, metrics, or service guarantees (speed, SEO scores, accessibility).
+  - Lets users switch between Balanced and Ultra mode at runtime.
+  - Sets a sessionStorage flag so the device modal won’t re-open immediately after a manual switch.
 - TitleHeader.jsx:
-  - Consistent, styled section headers with subtitle support.
+  - Consistent section headers.
 - models/:
-  - Assets or data models used by components (e.g., structured content, icons, or 3D assets if applicable).
+  - Place 3D helpers or references/assets used for Ultra mode.
 
 ### src/sections (Page Sections)
-- Contains top-level sections composing your landing page such as:
-  - Hero (headline, primary CTA)
-  - Services (cards, descriptions)
-  - Process/How It Works
-  - Portfolio/Case Studies
-  - Pricing
-  - Testimonials
-  - FAQ
-  - Contact/CTA
-- Each section typically composes shared components and constants for content.
+- OptimizedHero.jsx, OptimizedTechStack.jsx, OptimizedContact.jsx:
+  - Optimized versions designed to respect performance mode (e.g., static images for Balanced).
+- Other sections (Showcase, Featurecards, ExperienceSection, LogoShowcase, Testimonials):
+  - Compose shared components and constants for content.
 
 ### src/constants (Static Content)
-- Central place for:
-  - Navigation items (labels and target IDs)
-  - Services data (title, description, icon)
-  - Pricing tiers and features
-  - FAQ questions/answers
-  - Social links or contact info
+- Navigation items, services data, pricing tiers, FAQs, social/contact info.
 
 ### src/context (Global State with React Context)
-- Providers for:
-  - Theme (light/dark, system preference)
-  - Device or viewport info
-  - App state for UI toggles, modals, or selections
+- DeviceContext.jsx:
+  - Exposes performance mode (balanced | ultra) and updatePerformanceMode.
+  - Persists choice in localStorage under key performance_mode.
 
-### src/styles (Additional Styling)
-- Extra CSS files or modules to complement Tailwind when needed.
+### src/styles
+- Additional styling beyond Tailwind (if needed).
+
+---
+
+## Performance Modes and Low-End Fallbacks
+
+Background:
+- Initially, the site used full 3D visuals that ran smoothly on high-end devices but caused lag on low-end devices.
+- To prioritize UX over flashy visuals, the app now supports two modes with graceful fallbacks:
+  1) Balanced Mode (Static) — default on fresh load
+     - Uses static images (PNG/JPG/WebP) instead of heavy 3D.
+     - Ensures smooth performance on base/medium segment devices.
+  2) Ultra Mode (3D)
+     - Enables rich 3D experiences for high/premium devices.
+
+How it works:
+- On every fresh page load (true refresh), App.jsx forces “balanced” mode:
+  - localStorage.setItem("performance_mode", "balanced")
+  - After a 1.5s delay, DeviceDetectionModal prompts the user to select Balanced or Ultra.
+- If a user switches mode via PerformancePanel:
+  - A session flag sessionStorage.setItem('mode_changed_via_panel', 'true') is used to avoid re-showing the modal immediately on the subsequent render.
+- DeviceDetectionModal:
+  - Provides two buttons: Balanced (Static) and Ultra (3D).
+  - Calls updatePerformanceMode("balanced" | "ultra") from DeviceContext.
+- PerformancePanel:
+  - Allows changing modes anytime without reloading.
+
+Where to put assets:
+- 3D assets/helpers: src/components/models/
+- Static fallbacks: public/images/models/ (or another logical path under public/images)
+
+Pattern for conditional rendering in components/sections:
+```jsx
+import { useDevice } from "../context/DeviceContext";
+
+const ExampleModelBlock = () => {
+  const { performanceMode } = useDevice(); // "balanced" | "ultra"
+
+  if (performanceMode === "ultra") {
+    return (
+      <div className="w-full h-[320px]">
+        {/* Render your 3D model viewer/component here */}
+        {/* <My3DViewer modelPath="/models/scene.glb" /> */}
+      </div>
+    );
+  }
+
+  // Balanced mode: show static PNG/JPG/WebP fallback
+  return (
+    <img
+      src="/images/models/scene-fallback.png"
+      alt="3D preview (static)"
+      className="w-full h-auto object-contain"
+      loading="lazy"
+      decoding="async"
+    />
+  );
+};
+```
+
+Implementation tips:
+- Keep Ultra mode code-split/lazy-loaded to avoid heavy bundles for Balanced users.
+- Keep PNG/WebP fallbacks optimized (use responsive sizes, lazy-load, and caching).
+- Test on throttled CPU/Network to validate smoothness.
+- Remember: UX > Attractive design; pick Ultra only when hardware can handle it or user explicitly opts in.
+
+Storage keys:
+- localStorage: "performance_mode" set to "balanced" or "ultra"
+- sessionStorage: "mode_changed_via_panel" = "true" to skip showing DeviceDetectionModal right after a manual switch
 
 ---
 
@@ -216,8 +287,6 @@ Preview the production build locally:
 ```
 npm run preview
 ```
-
-Note: Scripts reflect common Vite defaults. If you adjust script names in package.json, use your updated commands.
 
 ---
 
@@ -277,8 +346,10 @@ Environment Variables:
 - Data: Centralize in src/constants to keep components lean.
 - Accessibility: Use semantic markup, alt text for images, and keyboard navigable components.
 - Performance:
-  - Keep components focused and lazy-load heavy sections if needed.
+  - Default to Balanced mode on fresh loads.
+  - Lazy-load Ultra mode 3D viewers.
   - Use memoization where appropriate for expensive renders.
+  - Prefer responsive images and modern formats (WebP/AVIF where possible).
 
 ---
 
@@ -297,20 +368,34 @@ Add a new Component:
 3. Write basic inline docs (prop descriptions).
 4. Add it to your sections as needed.
 
-Update Navbar Links:
-- Edit the navigation array in src/constants to add, remove, or reorder links.
-- Ensure each target section has a corresponding id for smooth scrolling.
+Make a component respect performance mode:
+1. Import useDevice from context.
+2. Read performanceMode.
+3. Conditionally render Ultra (3D) vs Balanced (PNG) as shown above.
+
+---
+
+## Testing and Debugging Tips
+
+- Simulate Low-End Devices:
+  - Chrome DevTools → Performance → CPU Throttle (4x/6x).
+  - Network Throttle to “Fast 3G/Slow 4G” for image loading checks.
+- Force a mode:
+  - In console: localStorage.setItem("performance_mode","balanced") or "ultra"
+  - Reload; or use the PerformancePanel to toggle.
+- Validate modal flow:
+  - sessionStorage.removeItem('mode_changed_via_panel'); reload to see DeviceDetectionModal after 1.5s.
 
 ---
 
 ## FAQ
 
-- Can I use this as a multi-page app?
-  - Yes. Start with React Router or keep it as a polished single-page landing site.
-- Does it require a backend?
-  - No. It’s a static, client-first site. You can integrate APIs or a backend as needed.
-- Can I deploy without Tailwind?
-  - Tailwind is deeply integrated. Removing it is possible but not recommended.
+- Why default to Balanced mode on refresh?
+  - To protect UX on unknown/low-end devices and avoid jank.
+- Can Ultra mode be enabled automatically based on hardware?
+  - You can add heuristics (e.g., hardware concurrency, memory, GPU checks). For now, user choice + panel override is implemented.
+- Do I need a backend?
+  - No. It’s a static, client-first site. You can integrate APIs as needed.
 
 ---
 
